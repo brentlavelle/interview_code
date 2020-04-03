@@ -7,8 +7,15 @@
 ```sh
 > gem install 'watir'
 > gem install 'webdrivers'
+> gem install 'rspec'
+> gem install 'faker'
 ```
-1) Run
+1) Run a sample program
 ```sh
 > ruby simple_tst.rb
+```
+
+1) Run tke tests
+```sh
+> rspec spec/test_form_view_spec.rb 
 ```
