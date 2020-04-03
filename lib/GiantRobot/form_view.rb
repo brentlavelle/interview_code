@@ -31,6 +31,9 @@ module GiantRobot
     }
 
 
+    def home?
+      @browser.h1(text: 'Tell us about yourself').present?
+    end
 
     def set_text(attr, value)
       @browser.text_field(name: TEXT_NAMES[attr]).set value
@@ -38,6 +41,8 @@ module GiantRobot
 
     def set_state(value)
       @browser.select(name: 'state').select value
+    rescue Watir::Exception::NoValueFoundException
+      raise FormViewError
     end
 
     def set(attributes)
@@ -48,6 +53,14 @@ module GiantRobot
       if attributes.key? :state
         set_state attributes[:state]
       end
+    end
+
+    def list_errors
+      all_errors = []
+      @browser.spans(text: /^Please enter/).each do |span|
+        all_errors << span.text
+      end
+      all_errors
     end
 
     def submit
