@@ -79,7 +79,8 @@ module GiantRobot
     def get
       model = {}
       LOCATORS.keys.each do |key|
-        model[key] = get_text_value(LOCATORS[key])
+        value = get_text_value(LOCATORS[key])
+        model[key] = value if value
       end
       model
     end
@@ -91,8 +92,11 @@ module GiantRobot
     end
 
     def start_over
-      #browser.button(text: 'Start over').click
+      @browser.button(text: 'Start over').click
     end
 
+    def close_browser
+      @browser.close
+    end
   end
 end
