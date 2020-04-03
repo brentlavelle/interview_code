@@ -1,6 +1,6 @@
 # Watir test code
 
-##Setup
+## Setup
 
 * Install [Ruby 2.7.1](https://www.ruby-lang.org/en/documentation/installation/)
 * Install gems
