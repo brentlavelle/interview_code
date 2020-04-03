@@ -2,20 +2,18 @@
 
 ##Setup
 
-1) Install [Ruby 2.7.1](https://www.ruby-lang.org/en/documentation/installation/)
-1) Instal Watir
+* Install [Ruby 2.7.1](https://www.ruby-lang.org/en/documentation/installation/)
+* Install gems
 ```sh
-> gem install 'watir'
-> gem install 'webdrivers'
-> gem install 'rspec'
-> gem install 'faker'
+> gem install 'bundler'
+> bundle install
 ```
-1) Run a sample program
+* Run a sample program
 ```sh
 > ruby simple_tst.rb
 ```
 
-1) Run tke tests
+* Run the tests
 ```sh
 > rspec spec/test_form_view_spec.rb 
 ```
