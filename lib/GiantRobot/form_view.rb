@@ -36,6 +36,7 @@ module GiantRobot
     end
 
     def set_text(attr, value)
+      # FIXME: this does not clear the field first
       @browser.text_field(name: TEXT_NAMES[attr]).set value
     end
 
