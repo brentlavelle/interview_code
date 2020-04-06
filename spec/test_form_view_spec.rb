@@ -78,6 +78,7 @@ describe 'TestFormView' do
     end
 
     it 'can be used 3 times in a row' do
+      # Possibly obsolete due to phone number tests below
       model = DEFAULT_MODEL.clone
       3.times do |time|
         model[:addr1] = "#{time} Main St"
@@ -112,12 +113,37 @@ describe 'TestFormView' do
     end
 
     it 'allows odd characters' do
+      # Note that there is not normalization
       model         = DEFAULT_MODEL.clone
       model[:addr1] = 'Mo-Pac 学中文 а, и, м, т, щ Expressway'
       @robot_form.set model
       @robot_form.submit
       expect(@robot_form.get).to eq(model)
       expect(@robot_form.continue).to be true
+    end
+
+    it 'allows for some phone number formats' do
+      model         = DEFAULT_MODEL.clone
+      model[:phone] = '(512)555-9876'
+      @robot_form.set model
+      @robot_form.submit
+      expect(@robot_form.get).to eq(model)
+      expect(@robot_form.continue).to be true
+      @robot_form.start_over
+
+      model[:phone] = '2125551234'
+      @robot_form.set model
+      @robot_form.submit
+      expect(@robot_form.get).to eq(model)
+      expect(@robot_form.continue).to be true
+      @robot_form.start_over
+
+      model[:phone] = '212 555 1234'
+      @robot_form.set model
+      @robot_form.submit
+      expect(@robot_form.get).to eq(model)
+      expect(@robot_form.continue).to be true
+
     end
   end
 
@@ -172,6 +198,34 @@ describe 'TestFormView' do
       @robot_form.submit
       expect(@robot_form.list_errors).to eq(['Please enter a valid state.'])
       expect(@robot_form.home?).to be(true)
+    end
+
+    it 'validates phone information missing area code' do
+      model         = DEFAULT_MODEL.clone
+      model[:phone] = '5559876'
+      @robot_form.set model
+      expect(@robot_form.list_errors).to eq(['Please enter a valid mobile phone number.'])
+    end
+
+    it 'validates phone information text' do
+      model         = DEFAULT_MODEL.clone
+      model[:phone] = 'I do not have one'
+      @robot_form.set model
+      expect(@robot_form.list_errors).to eq(['Please enter a valid mobile phone number.'])
+    end
+
+    it 'validates phone information too long' do
+      model         = DEFAULT_MODEL.clone
+      model[:phone] = '12355512345'
+      @robot_form.set model
+      expect(@robot_form.list_errors).to eq(['Please enter a valid mobile phone number.'])
+    end
+
+    it 'does not allow international numbers' do
+      model         = DEFAULT_MODEL.clone
+      model[:phone] = '+1 5125553434'
+      @robot_form.set model
+      expect(@robot_form.list_errors).to eq(['Please enter a valid mobile phone number.'])
     end
 
     it 'does not like an empty form - multiple errors' do
